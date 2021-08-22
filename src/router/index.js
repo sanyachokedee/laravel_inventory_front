@@ -1,18 +1,35 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/Home.vue'
-//ใส่ @ จะไปเร่ิมที่ src แล้หาไฟล์ให้เอง
-import About from '@/views/About.vue'
+
+// Import layouts เอามาเป็นแม่แล้วเอาลูก Children มาใส่
+import FrontendLayout from '@/layouts/Frontend.vue' 
+
+//ใส่ @ จะไปเร่ิมที่ src แล้วหาไฟล์ให้เอง
+// Import views
+import Home from '@/views/frontend/Home.vue' 
+import About from '@/views/frontend/About.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: FrontendLayout,
+    children: [
+      {
+        path: '',
+        component: Home
+      }
+    ]
   },
   {
     path: '/about',
     name: 'About',
-    component: About
+    component: FrontendLayout,
+    children: [
+      {
+        path: '',
+        component: About
+      }
+    ]
   },
 ]
 
