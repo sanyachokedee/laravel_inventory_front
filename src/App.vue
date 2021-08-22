@@ -13,7 +13,18 @@
 </template>
 
 <script>
+
+let brand = " | Inventory Vue SPA"
+
 export default {
-  name :'App'
+  name :'App',
+
+  watch: {
+    $route(to){
+      // ชื่อ to คือ ตัวแปรในการรับค่าตรงๆ มาให้แล้วนำไปใช้ตั้งชื่ออะไรก็ได้
+      document.title = to.meta.title + brand,
+      document.description = to.meta.description
+    }
+  }
 }
 </script>
