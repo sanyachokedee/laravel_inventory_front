@@ -140,7 +140,7 @@ export default {
   methods: {
     submitForm() {
       // alert(id)
-      this.v$.$validate(); // checks all input
+      this.v$.$validate(); // check all input
       if (!this.v$.$error) {
         // ถ้า validate ผ่านแล้ว
         // alert('Form validate Success')
@@ -159,7 +159,16 @@ export default {
               localStorage.setItem("user", JSON.stringify(response.data));
 
               //เมื่อล็อคอินผ่านส่งไปหน้า dashboard
-              this.$router.push("backend");
+              console.log('message = '+response.data.token)
+              if(response.data.token)  {
+                alert('Username และ Password ถูก')
+                // this.$router.replace("http://localhost:8000/")
+                this.$router.push("dashboard")
+                // this.$router.push("about")
+                
+              }else{
+                alert('Username และ Password ผิด')
+              }
             })
             .cathch((error) => {
               if (error.response) {
@@ -167,10 +176,13 @@ export default {
                 console.log(error.response.status);
                 console.log(error.response.headers);
               }
+             
             }
         );
       } else {
-        // alert('Form validate fail!')
+        alert('Form validate fail! goto LOgin')
+        //เมื่อล็อคอินไม่ผ่านส่งไปหน้า login
+              this.$router.push("/login");
       }
     },
   },

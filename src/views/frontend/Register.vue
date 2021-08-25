@@ -21,25 +21,25 @@
 
               <h1 class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">สมัครสมาชิกใหม่</h1>
 
-              <form>
+              <form  @submit.prevent="onSubmit">
 
                 <label class="block mb-2 text-sm text-gray-700" for="fullname">ชื่อ-สกุล</label>
-                <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="fullname" type="text">
+                <input v-model="fullname" class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="fullname" type="text">
 
                 <label class="block mt-3 mb-2 text-sm text-gray-700" for="username">ชื่อผู้ใช้</label>
-                <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="username" type="text">
+                <input v-model="username" class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="username" type="text">
 
                 <label class="block mt-3 mb-2 text-sm text-gray-700" for="mobile">เบอร์โทรศัพท์</label>
-                <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="mobile" type="text">
+                <input v-model="mobile" class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="mobile" type="text">
 
                 <label class="block mt-3 mb-2 text-sm text-gray-700" for="email">อีเมล์</label>
-                <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="email" type="text" autocomplete="email">
+                <input v-model="email" class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="email" type="text">
 
                 <label class="block mt-3 mb-2 text-sm text-gray-700" for="password">รหัสผ่าน</label>
-                <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="password" type="password" autocomplete="current-password">
+                <input v-model="password" class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="password" type="password">
 
                 <label class="block mt-3 mb-2 text-sm text-gray-700" for="confirm_password">ยืนยันรหัสผ่าน</label>
-                <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="confirm_password" type="password" autocomplete="current-password">
+                <input v-model="confirm_password" class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="confirm_password" type="password">
 
                 <p class="my-4"></p>
 
@@ -49,8 +49,8 @@
                   </span>
                 </label>
                 
-                <input type="button"
-                    class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg cursor-pointer active:bg-purple-600 hover:bg-purple-700" value="สมัครสมาชิก">
+                <button @click="submitForm"  class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg cursor-pointer active:bg-purple-600 hover:bg-purple-700">สมัครสมาชิก
+                </button>
               </form>
 
               <p class="my-8"></p>
@@ -90,3 +90,36 @@
       </div>
     </div>
 </template>
+
+<script>
+// import useValidate from '@vuelidate/core'
+// import { required, email, helpers } from '@vuelidate/validators'
+
+// import http from '@/services/AuthService'
+
+export default {
+  data() {
+    return {
+      // v$: useValidate(),
+      fullname: "",
+      // email: "",
+      // password: "",
+      // tel: "",
+      // role: ""
+    }
+  },
+  methods: {
+    submitForm() {
+      // this.v$.$validate(); // check all input
+      console.log('email = '+this.email)
+      console.log('this = '+this)
+      alert('form'+this)
+    }
+  }
+
+
+
+
+
+}
+</script>

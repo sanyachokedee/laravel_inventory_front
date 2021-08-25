@@ -14,6 +14,7 @@ import Register from '@/views/frontend/Register.vue'
 import Login from '@/views/frontend/Login.vue'
 import ForgotPassword from '@/views/frontend/ForgotPassword.vue'
 import NotFound404 from '@/views/frontend/NotFound404.vue'
+import DashBoard from '@/views/backend/DashBoard'
 
 const routes = [
   {
@@ -137,6 +138,15 @@ const routes = [
       description: 'ลืมรหัสผ่านระบบคงคลังสินค้า',
     }
   },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',    
+    component: DashBoard,
+    meta: {
+      title: 'Dashboard',
+      description: 'ระบบคงคลังสินค้า',
+    }
+  },
 
   //error 404
   {
@@ -147,6 +157,7 @@ const routes = [
       description: 'ไม่พบหน้านี้',
     }
   },
+  
 ]
 
 const router = createRouter({
