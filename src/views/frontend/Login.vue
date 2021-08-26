@@ -160,14 +160,17 @@ export default {
 
               //เมื่อล็อคอินผ่านส่งไปหน้า dashboard
               console.log('message = '+response.data.token)
-              if(response.data.token)  {
+              if(response.status ==201)  {
+              // if(response.data.token)  {
                 alert('Username และ Password ถูก')
                 // this.$router.replace("http://localhost:8000/")
                 this.$router.push("dashboard")
                 // this.$router.push("about")
                 
               }else{
-                alert('Username และ Password ผิด')
+                if(response.status==222){
+                  alert('Username และ Password ผิด')
+                }
               }
             })
             .cathch((error) => {
@@ -175,12 +178,10 @@ export default {
                 console.log(error.response.data);
                 console.log(error.response.status);
                 console.log(error.response.headers);
-              }
-             
+              }             
             }
         );
       } else {
-        alert('Form validate fail! goto LOgin')
         //เมื่อล็อคอินไม่ผ่านส่งไปหน้า login
               this.$router.push("/login");
       }

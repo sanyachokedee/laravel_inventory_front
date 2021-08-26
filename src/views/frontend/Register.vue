@@ -38,8 +38,8 @@
                 <label class="block mt-3 mb-2 text-sm text-gray-700" for="password">รหัสผ่าน</label>
                 <input v-model="password" class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="password" type="password">
 
-                <label class="block mt-3 mb-2 text-sm text-gray-700" for="confirm_password">ยืนยันรหัสผ่าน</label>
-                <input v-model="confirm_password" class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="confirm_password" type="password">
+                <label class="block mt-3 mb-2 text-sm text-gray-700" for="password_confirmation">ยืนยันรหัสผ่าน</label>
+                <input v-model="password_confirmation" class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none" id="password_confirmation" type="password">
 
                 <p class="my-4"></p>
 
@@ -95,25 +95,77 @@
 // import useValidate from '@vuelidate/core'
 // import { required, email, helpers } from '@vuelidate/validators'
 
-// import http from '@/services/AuthService'
+import http from '@/services/AuthService'
 
 export default {
   data() {
     return {
       // v$: useValidate(),
       fullname: "",
-      // email: "",
-      // password: "",
-      // tel: "",
-      // role: ""
+      email: "",
+      password: "",
+      password_confirmation: "",
+      tel: "",
+      role: ""
     }
   },
   methods: {
     submitForm() {
       // this.v$.$validate(); // check all input
       console.log('email = '+this.email)
-      console.log('this = '+this)
-      alert('form'+this)
+      console.log('password= '+this.password)
+      alert('form  '+this.email)
+     //เรียกใช้งาน api login ที่ laravel ใน register เอาไปต่อเองใน baseURL
+     http.post(
+       "register",
+       {
+          fullname: this.fullname,
+          username: this.username,
+          email: this.email,
+          password: this.password,
+          password_confirmation: this.password_confirmation,
+          tel: this.tel,
+          role: "1"
+          
+          // fullname: "somchai Thaiand",
+          // username: "somchai",
+          // email: "somchai@email.com",
+          // password: "123456",
+          // password_confirmation: "123456",
+          // tel:  "0895647789",
+          // role: "1"
+       })
+       .then(response => {
+          alert('then  '+response.data)
+          console.log(response.data);
+          console.log("user ="+response.data.user);
+          console.log("email ="+response.data.email);
+
+          //เก็บข้อมูล user ลง localstorage              
+          localStorage.setItem("user", JSON.stringify(response.data));
+
+          //เมื่อล็อคอินผ่านส่งไปหน้า dashboard
+              console.log('message = '+response.data.token)
+              if(response.data.token)  {
+                alert('Username และ Password ถูก')
+                // this.$router.replace("http://localhost:8000/")
+                this.$router.push("dashboard")
+                // this.$router.push("about")
+                
+              }else{
+                alert('Username และ Password ผิด')
+              }
+        
+       })
+       .cathch((error) => {
+          alert('catch  '+ error.data)
+              if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+              }
+            }
+        )
     }
   }
 
