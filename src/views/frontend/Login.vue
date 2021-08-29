@@ -160,19 +160,21 @@ export default {
 
               //เมื่อล็อคอินผ่านส่งไปหน้า dashboard
               console.log('message = '+response.data.token)
-              if(response.status ==201)  {
-              // if(response.data.token)  {
-                alert('Username และ Password ถูก')
-                // this.$router.replace("http://localhost:8000/")
-                this.$router.push("dashboard")
-                // this.$router.push("about")
-                
-              }else{
-                if(response.status==222){
-                  alert('Username และ Password ผิด')
+              //client สร้างสำเร็จเมื่อทำเสร็จ post put = 201
+                if(response.status ==201)  {
+                // if(response.data.token)  {
+                  alert('Username และ Password ถูก')
+                  // this.$router.replace("http://localhost:8000/")
+                  this.$router.push("dashboard")
                 }
-              }
+                //client ไม่ได้รับอนุญาต = 401
+                if(response.status==401){
+                    alert('Username และ Password ผิด')
+                    console.warn('ไม่ผ่าน'+ response.status)
+                }
+              
             })
+            
             .cathch((error) => {
               if (error.response) {
                 console.log(error.response.data);

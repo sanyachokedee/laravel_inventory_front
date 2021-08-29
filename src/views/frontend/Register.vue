@@ -128,16 +128,18 @@ export default {
           role: "1"
           
           // fullname: "somchai Thaiand",
-          // username: "somchai",
-          // email: "somchai@email.com",
+          // username: "somchai2",
+          // email: "somchai2@email.com",
           // password: "123456",
           // password_confirmation: "123456",
           // tel:  "0895647789",
           // role: "1"
        })
+
+       
        .then(response => {
           alert('then  '+response.data)
-          console.log(response.data);
+          console.log(response.data.status);
           console.log("user ="+response.data.user);
           console.log("email ="+response.data.email);
 
