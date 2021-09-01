@@ -146,46 +146,86 @@ export default {
         // alert('Form validate Success')
 
         //เรียกใช้งาน api login ที่ laravel ใน login เอาไปต่อเองใน baseURL
-        http.post(
-          "login",
-          {
+        http
+          .post("login", {
             email: this.email,
             password: this.password,
           })
-            .then((response) => {
-              console.log(response.data);
+          .then((response) => {
+            // Login  ผ่าน จะอยู่ใน .then
+            console.log(response.data);
 
-              //เก็บข้อมูล user ลง localstorage
-              localStorage.setItem("user", JSON.stringify(response.data));
+            //เก็บข้อมูล user ลง localstorage
+            localStorage.setItem("user", JSON.stringify(response.data));
 
-              //เมื่อล็อคอินผ่านส่งไปหน้า dashboard
-              console.log('message = '+response.data.token)
-              //client สร้างสำเร็จเมื่อทำเสร็จ post put = 201
-                if(response.status ==201)  {
-                // if(response.data.token)  {
-                  alert('Username และ Password ถูก')
-                  // this.$router.replace("http://localhost:8000/")
-                  this.$router.push("dashboard")
-                }
-                //client ไม่ได้รับอนุญาต = 401
-                if(response.status==401){
-                    alert('Username และ Password ผิด')
-                    console.warn('ไม่ผ่าน'+ response.status)
-                }
-              
-            })
-            
-            .cathch((error) => {
-              if (error.response) {
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-              }             
+            // เรียกใช้งาน popup ของ sweetalert2
+                const Toast = this.$swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", this.$swal.stopTimer);
+                    toast.addEventListener("mouseleave", this.$swal.resumeTimer);
+                  }
+                })
+
+                Toast.fire({
+                  icon: "success",
+                  title: "กำลังเข้าสู่ระบบ",
+                }).then(()=>{
+
+                  //เมื่อแสดง Toast เสร็จ ส่งต่อไปล็อคอินผ่านส่งไปหน้า dashboard
+                   this.$router.push("backend");
+                })
+
+
+            //เมื่อล็อคอินผ่านส่งไปหน้า dashboard
+            console.log("message = " + response.data.token);
+            //client สร้างสำเร็จเมื่อทำเสร็จ post put = 201
+            // this.$router.replace("http://localhost:8000/")
+            // this.$router.push("dashboard");
+          })
+          .catch((error) => {
+            // Login ไม่ผ่านจะอยู่ใน cathch
+            if (error.response) {
+              // console.log(error.response.data);
+              // console.log(error.response.status);
+              // console.log(error.response.headers);
+              if (error.response.status == 401) {
+                
+                // เรียกใช้งาน popup ของ sweetalert2
+                const Toast = this.$swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", this.$swal.stopTimer);
+                    toast.addEventListener("mouseleave", this.$swal.resumeTimer);
+                  }
+                })
+
+                Toast.fire({
+                  icon: "error",
+                  title: "ข้อมูลเข้าระบบไม่ถูกต้อง",
+                });
+
+                // this.$swal({
+                //   position: "top-end",
+                //   icon: "error",
+                //   title: "ข้อมูลเข้าระบบไม่ถูกต้อง",
+                //   showConfirmButton: false,
+                //   timer: 1500,
+                // });
+              }
             }
-        );
+          });
       } else {
         //เมื่อล็อคอินไม่ผ่านส่งไปหน้า login
-              this.$router.push("/login");
+        this.$router.push("/login");
       }
     },
   },

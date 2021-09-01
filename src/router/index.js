@@ -1,11 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 // Import layouts เอามาเป็นแม่แล้วเอาลูก Children มาใส่
-import FrontendLayout from '@/layouts/Frontend.vue' 
+import FrontendLayout from '@/layouts/Frontend.vue'
+import BackendLayout from '@/layouts/Backend.vue'
 
 //ใส่ @ จะไปเร่ิมที่ src แล้วหาไฟล์ให้เอง
 // Import views
-import Home from '@/views/frontend/Home.vue' 
+// Frontend
+import Home from '@/views/frontend/Home.vue'
 import About from '@/views/frontend/About.vue'
 import Portfolio from '@/views/frontend/Portfolio.vue'
 import Service from '@/views/frontend/Service.vue'
@@ -14,9 +16,13 @@ import Register from '@/views/frontend/Register.vue'
 import Login from '@/views/frontend/Login.vue'
 import ForgotPassword from '@/views/frontend/ForgotPassword.vue'
 import NotFound404 from '@/views/frontend/NotFound404.vue'
-import DashBoard from '@/views/backend/DashBoard'
+
+// Import Backend
+import Dashboard from '@/views/backend/Dashboard';
+import Products from '@/views/backend/Products';
 
 const routes = [
+  // Frontend's Router
   {
     path: '/',
     name: 'Home',
@@ -47,7 +53,7 @@ const routes = [
       description: 'เกียวกับระบบระบบคงคลังสินค้า',
     }
   },
-  
+
   {
     path: '/portfolio',
     name: 'Portfolio',
@@ -138,15 +144,7 @@ const routes = [
       description: 'ลืมรหัสผ่านระบบคงคลังสินค้า',
     }
   },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',    
-    component: DashBoard,
-    meta: {
-      title: 'Dashboard',
-      description: 'ระบบคงคลังสินค้า',
-    }
-  },
+  
 
   //error 404
   {
@@ -157,7 +155,39 @@ const routes = [
       description: 'ไม่พบหน้านี้',
     }
   },
-  
+  // Backend's Router
+  {
+    path: '/backend',
+    name: 'Dashbaord',
+    component: BackendLayout,
+    children: [
+      {
+        path: '',
+        component: Dashboard
+      }
+    ],
+    meta: {
+      title: 'Dashboard',
+      description: 'Dashboard Description'
+    }
+
+  },
+  {
+    path: '/backend/products',
+    name: 'Products',
+    component: BackendLayout,
+    children: [
+      {
+        path: '',
+        component: Products
+      }
+    ],
+    meta: {
+      title: 'Products',
+      description: 'Products Description'
+    }
+
+  },
 ]
 
 const router = createRouter({
