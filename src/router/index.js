@@ -18,8 +18,10 @@ import ForgotPassword from '@/views/frontend/ForgotPassword.vue'
 import NotFound404 from '@/views/frontend/NotFound404.vue'
 
 // Import Backend
-import Dashboard from '@/views/backend/Dashboard';
-import Products from '@/views/backend/Products';
+import Dashboard from '@/views/backend/Dashboard'
+import Products from '@/views/backend/Products'
+import Testvue from '@/views/backend/Testvue'
+import Start from '@/views/backend/Start';
 
 const routes = [
   // Frontend's Router
@@ -172,6 +174,8 @@ const routes = [
     }
 
   },
+
+  //********** */ Backend **********
   {
     path: '/backend/products',
     name: 'Products',
@@ -187,6 +191,36 @@ const routes = [
       description: 'Products Description'
     }
 
+  },
+  {
+    path: '/backend/testvue',
+    name: 'Testvue',
+    component: BackendLayout,
+    children: [
+      {
+        path: '',
+        component: Testvue
+      }
+    ],
+    meta: {
+      title: 'Test vue by moo',
+      description: 'Test vue by moo'
+    }
+  },
+  {
+    path: '/backend/testvue/start',
+    name: 'Start',
+    component: BackendLayout,
+    children: [
+      {
+        path: '',
+        component: Start
+      }
+    ],
+    meta: {
+      title: 'Test vue by moo',
+      description: 'Test vue by moo'
+    }
   },
 ]
 

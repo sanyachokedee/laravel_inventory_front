@@ -67,13 +67,12 @@
           </tr>
         </tbody>
       </table>
-      <div></div>
       <div>
         <a href="{{ products.data.first_page_url }}">1</a>
         <a href="{{ products.data.next_page_url }}"> Next </a>
         <!-- paginate {{ products.first_page_url}} -->
       </div>
-      <router-link to="/about">About</router-link>
+     
     </div>
   </div>
 </template>
