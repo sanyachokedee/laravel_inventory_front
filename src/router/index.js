@@ -27,11 +27,11 @@ const routes = [
   // Frontend's Router
   {
     path: '/',
-    name: 'Home',
     component: FrontendLayout,
     children: [
       {
         path: '',
+        name: 'Home',
         component: Home
       }
     ],
@@ -42,11 +42,11 @@ const routes = [
   },
   {
     path: '/about',
-    name: 'About',
     component: FrontendLayout,
     children: [
       {
         path: '',
+        name: 'About',
         component: About
       }
     ],
@@ -58,11 +58,11 @@ const routes = [
 
   {
     path: '/portfolio',
-    name: 'Portfolio',
     component: FrontendLayout,
     children: [
       {
         path: '',
+        name: 'Portfolio',
         component: Portfolio
       }
     ],
@@ -71,13 +71,14 @@ const routes = [
       description: 'ผลงานของเราระบบคงคลังสินค้า',
     }
   },
+
   {
     path: '/service',
-    name: 'Service',
     component: FrontendLayout,
     children: [
       {
         path: '',
+        name: 'Service',
         component: Service
       }
     ],
@@ -86,13 +87,14 @@ const routes = [
       description: 'บริการของระบบคงคลังสินค้า',
     }
   },
+
   {
     path: '/contact',
-    name: 'Contact',
     component: FrontendLayout,
     children: [
       {
         path: '',
+        name: 'Contact',
         component: Contact
       }
     ],
@@ -101,13 +103,14 @@ const routes = [
       description: 'ติดต่อระบบคงคลังสินค้า',
     }
   },
+
   {
     path: '/register',
-    name: 'Register',
     component: FrontendLayout,
     children: [
       {
         path: '',
+        name: 'Register',
         component: Register
       }
     ],
@@ -118,11 +121,11 @@ const routes = [
   },
   {
     path: '/Login',
-    name: 'Login',
     component: FrontendLayout,
     children: [
       {
         path: '',
+        name: 'Login',
         component: Login
       }
     ],
@@ -133,11 +136,11 @@ const routes = [
   },
   {
     path: '/forgotPassword',
-    name: 'ForgotPassword',
     component: FrontendLayout,
     children: [
       {
         path: '',
+        name: 'ForgotPassword',
         component: ForgotPassword
       }
     ],
