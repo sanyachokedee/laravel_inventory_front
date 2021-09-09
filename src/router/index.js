@@ -18,7 +18,7 @@ import ForgotPassword from '@/views/frontend/ForgotPassword.vue'
 import NotFound404 from '@/views/frontend/NotFound404.vue'
 
 // Import Backend
-import Dashboard from '@/views/backend/Dashboard'
+import Dashboard from '@/views/backend/Dashboard.vue'
 import Products from '@/views/backend/Products'
 import Testvue from '@/views/backend/Testvue'
 import Start from '@/views/backend/Start';
@@ -157,6 +157,8 @@ const routes = [
       description: 'ไม่พบหน้านี้',
     }
   },
+
+  
   // Backend's Router
   {
     path: '/backend',
