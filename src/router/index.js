@@ -165,11 +165,11 @@ const routes = [
   // Backend's Router
   {
     path: '/backend',
-    name: 'Dashbaord',
     component: BackendLayout,
     children: [
       {
         path: '',
+        name: 'Dashboard',
         component: Dashboard
       }
     ],
@@ -182,12 +182,12 @@ const routes = [
 
   //********** */ Backend **********
   {
-    path: '/backend/products',
-    name: 'Products',
+    path: '/backend',
     component: BackendLayout,
     children: [
       {
-        path: '',
+        path: 'products',
+        name: 'Products',
         component: Products
       }
     ],
@@ -198,12 +198,12 @@ const routes = [
 
   },
   {
-    path: '/backend/testvue',
-    name: 'Testvue',
+    path: '/backend',
     component: BackendLayout,
     children: [
       {
-        path: '',
+        path: 'testvue',
+        name: 'Testvue',
         component: Testvue
       }
     ],

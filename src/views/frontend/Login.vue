@@ -177,7 +177,8 @@ export default {
                 }).then(()=>{
 
                   //เมื่อแสดง Toast เสร็จ ส่งต่อไปล็อคอินผ่านส่งไปหน้า dashboard
-                   this.$router.push("backend");
+                  //  this.$router.push("backend");  // push แบบเรียก url backend
+                   this.$router.push({ name:'Dashboard' })  // push ผ่าน name
                 })
 
 

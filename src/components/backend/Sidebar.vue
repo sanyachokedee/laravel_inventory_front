@@ -53,6 +53,7 @@
           </ul>
           <ul>
             <li class="relative px-6 py-3">
+              <!-- <router-link to="/backend/testvue" -->
               <router-link to="/backend/testvue"
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
                 <svg
@@ -138,10 +139,11 @@
 export default {
   methods: {
     onclickLogout(){
+      console.log('method')
       localStorage.removeItem('user')
       // กลับไปหน้า login
-      // this.$router.push({ name: 'Login'})
-      window.location.href = '/login'
+      this.$router.push({ name: 'Login'})
+      // window.location.href = '/login'  // ใช้ เพื่อส่งตรงไปเลย
     }
   }
 }
