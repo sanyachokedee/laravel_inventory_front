@@ -9,12 +9,14 @@
 
     <!-- <router-link :to="{ name: 'About' }">About</router-link> -->
   <!-- </div> -->
+  <h1> {{ brand}} </h1>
   <router-view />    <!-- ไว้โหลดข้อมูล -->
 </template>
 
 <script>
 
-let brand = " | Inventory Vue SPA"
+let brand = " | "+ process.env.VUE_APP_TITLE //เรียกผ่านตัวแปร 
+// let brand = " | Inventory Vue SPA" 
 
 export default {
   name :'App',

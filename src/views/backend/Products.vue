@@ -137,12 +137,12 @@
                 <div>
                   <p class="font-semibold">{{ product.name }}</p>
                   <p class="text-xs text-gray-600 dark:text-gray-400">
-                    {{ product.created_at }}
+                    {{ format_date(product.created_at) }}
                   </p>
                 </div>
               </div>
             </td>
-            <td class="px-4 py-3 text-sm">{{ product.price }}</td>
+            <td class="px-4 py-3 text-sm">{{ format_price(product.price) }}</td>
             <td class="px-4 py-3 text-sm">
               <div class="flex items-center text-sm">
                 <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
@@ -160,7 +160,7 @@
                 <div>
                   <p class="font-semibold">{{}}</p>
                   <p class="text-xs text-gray-600 dark:text-gray-400">
-                    Updated {{}}
+                    Updated {{ format_date(product.updated_at)}}
                   </p>
                 </div>
               </div>
@@ -350,6 +350,7 @@ import "@ocrv/vue-tailwind-pagination/dist/style.css"
 import VueTailwindPagination from '@ocrv/vue-tailwind-pagination'
 import useValidate from '@vuelidate/core'
 import { required, helpers } from '@vuelidate/validators'
+import moment from 'moment';
 
 export default {
   data() {
@@ -457,17 +458,48 @@ export default {
           // ส่งข้อมูลไปยัง laravel Products Add
           http.post('products', data).then((response)=>{
             console.log(response)
+
+            //ล้างข้อมูลในฟอร์มเพิ่มสินค้า
+            // this.onResetForm()
+            this.closeAddModal()
+
+            // ไปแสดงหน้าหลักดึงข้อมูลมาใหม่อีกครั้ง
+            this.getProducts(this.currentPage);
+
+            // เรียกใช้งาน popup ของ sweetalert2
+                const Toast = this.$swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 1500,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", this.$swal.stopTimer);
+                    toast.addEventListener("mouseleave", this.$swal.resumeTimer);
+                  }
+                })
+
+                Toast.fire({
+                  icon: "success",
+                  title: "เพิ่มข้อมูลใหม่เรียบร้อย",
+                })
           })
-
-         
-
-
-
-
-
-
         }
+    },
+
+    // สร้าง function จัดรูปแบบ ด้วย moment
+    format_date(value) {
+      if(value){
+        return moment(String(value)).format('DD/MM/YY HH:mm')
+      }
+    },
+
+    // จัดรูปแบบแสดงราคา
+    format_price(value) {
+      let val = (value/1).toFixed(2).replace(',',',')
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
+
   },
 
     // ตรวจสอบ validations ข้อมูลของฟอร์มเพิ่มสินค้า

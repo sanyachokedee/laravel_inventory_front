@@ -20,11 +20,13 @@ import axios from "axios";
 
 
 const BackendService = axios.create({
-    baseURL: "http://localhost:8000/api/",
+    baseURL: process.env.VUE_APP_URL_API,    //ใช้อ่างอิงตัวแปรจาก .env.development.local 
+    // baseURL: "http://localhost:8000/api/",
     // baseURL: "https://7639-184-22-83-152.jp.ngrok.io/api/",
     withCredential: true,
     headers: {
-        "Content-type": "application/json",
+        "Content-type": "multipart/form-data",   //แก้ไขเพื่อให้รับไฟล์ได้ 
+        // "Content-type": "application/json",
         "Accept": "application/json",
         // "Authorization": `Bearer ${token}`
     },
