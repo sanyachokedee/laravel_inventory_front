@@ -242,9 +242,9 @@ export default {
         minLength: helpers.withMessage(
           ({ $params }) => `รหัสผ่านต้องไม่น้อยกว่า ${$params.min} ตัวอักษร`,
           minLength(6)
-        ),
-      },
-    };
-  },
-};
+        )
+      }
+    }
+  }
+}
 </script>

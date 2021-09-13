@@ -17,31 +17,12 @@
             </button>
             <!-- Search input -->
             <div class="flex justify-center flex-1 lg:mr-32">
-                <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
-                <div class="absolute inset-y-0 flex items-center pl-2">
-                    <svg
-                    class="w-4 h-4"
-                    aria-hidden="true"
-                    fill="currentColor"
-                    viewBox="0 0 20 20">
-                    <path
-                        fill-rule="evenodd"
-                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clip-rule="evenodd"></path>
-                    </svg>
-                </div>
-                <input
-                    class="w-full py-2 pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md"
-                    type="text"
-                    placeholder="Search for projects"
-                    aria-label="Search"
-                />
-                </div>
+                
             </div>
             <ul class="flex items-center flex-shrink-0 space-x-6">
                 <!-- Notifications menu -->
                 <li class="relative">
-                    <button class="relative align-middle rounded-md focus:outline-none focus:shadow-outline-purple"
+                    <button @click="onClickShowNotificatonMenu()" class="relative align-middle rounded-md focus:outline-none focus:shadow-outline-purple"
                         aria-label="Notifications"
                         aria-haspopup="true">
                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
@@ -50,7 +31,7 @@
                         <!-- Notification badge -->
                         <span aria-hidden="true" class="absolute top-0 right-0 inline-block w-3 h-3 transform translate-x-1 -translate-y-1 bg-red-600 border-2 border-white rounded-full dark:border-gray-800"></span>
                     </button>
-                    <template>
+                    <template :class="{ block : showNotificationMenu }">
                         <ul class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700">
                         <li class="flex">
                             <a class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" href="#">
@@ -76,7 +57,7 @@
 
                 <!-- Profile menu -->
                 <li class="relative">
-                <button 
+                <button @click="onClickShowProfile()"
                     class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
                     aria-label="Account"
                     aria-haspopup="true">
@@ -87,11 +68,11 @@
                     aria-hidden="true"
                     />
                 </button>
-                    <template>
+                    <template :class="{ block : showProfileMenu }">
                         <ul class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700"
                         aria-label="submenu">
                         <li class="flex">
-                            <a
+                            <a @click="test"
                             class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
                             href="#">
                             <svg
@@ -111,7 +92,7 @@
                             </a>
                         </li>
                         <li class="flex">
-                            <a
+                            <a @click="test"
                             class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
                             href="#"
                             >
@@ -132,24 +113,23 @@
                             <span>Settings</span>
                             </a>
                         </li>
-                        <li class="flex">
-                            <a
-                            class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                        <li class="lock">
+                            <a @click="onclickLogout" class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
                             href="#">
-                            <svg
-                                class="w-4 h-4 mr-3"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path
-                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-                                ></path>
-                            </svg>
-                            <span>Log out</span>
+                                <svg
+                                    class="w-4 h-4 mr-3"
+                                    aria-hidden="true"
+                                    fill="none"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path
+                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                                    ></path>
+                                </svg>
+                                <span>Log out</span>
                             </a>
                         </li>
                         </ul>
@@ -159,3 +139,33 @@
         </div>
     </header>
 </template>
+
+<script>
+export default {
+    // ตัวแปร
+    data() {
+        return {
+            showProfileMenu: false,   //ทั้งสองเพื่อกดให้เป็น false ไม่แสดงเมนู
+            showNotificationMenu: false
+        }
+    },
+    // เมดเธด
+    methods: {
+        onClickShowProfile() {
+            this.showProfileMenu = !this.showProfileMenu,  // ทำการสลับค่า
+            this.showNotificationMenu = false
+        },
+        onClickShowNotificatonMenu() {
+            this.showProfileMenu = false,  // ทำการสลับค่า
+            this.showNotificationMenu = !this.showNotificationMenu
+        },
+         onclickLogout(){
+             localStorage.removeItem('user')
+            // กลับไปหน้า login
+            this.$router.push({ name:'Login'})
+      // window.location.href = "/login"
+    }
+    }         
+}
+
+</script>
