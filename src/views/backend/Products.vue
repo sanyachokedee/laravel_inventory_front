@@ -487,6 +487,84 @@ export default {
         }
     },
 
+
+    // Popup แก้ไขสินค้า
+    // เปิด modal
+    openModalEditProduct(id) {
+      // console.log('opeonModalEdit'+id)
+      http.get(`products/${id}`).then(response=> {
+        // console.log(response.data)
+        this.eid= response.data.id
+        this.ename = response.data.name
+        this.edescription =  response.data.description
+        this.eslug = response.data.slug
+        this.eprice = response.data.price
+        this.eimgUrl = response.data.image
+        this.showEditModal = true;
+      })
+    },
+    // ปิด modal
+    editCloseModal() {
+      this.showEditModal = false
+      this.onResetForm() //ทำการรีเซตฟอร์ม method
+    },
+
+    // สร้างฟังก์ชั่นสำหรับอัพเดทข้อมูล
+    submitFormEdit(id){
+      // console.log("submitFomEdit"+id) // ได้ค่าจากการกดปุ่ม แก้ไข 
+      // ใช้ FormData ของ HTML5 API (Object) ลองรับทั้งแบบแนบไฟล์ และไม่แนบไฟล์
+          let data = new FormData()
+          data.append('name',this.ename)
+          data.append('description',this.edescription)
+          data.append('slug',this.eslug)
+          data.append('price',this.eprice)
+          data.append('file',this.file)
+
+          // Send Patch request to laravel
+          data.append('_method','PATCH')
+          http.post(`products/${id}`,
+            data
+          ).then(response => {
+            console.log(response.data)
+            //ล้างข้อมูลในฟอร์มเพิ่มสินค้า
+            // this.onResetForm()
+            this.editCloseModal()
+
+            // ไปแสดงหน้าหลักดึงข้อมูลมาใหม่อีกครั้ง
+            this.getProducts(this.currentPage);
+
+            // เรียกใช้งาน popup ของ sweetalert2
+                const Toast = this.$swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 1500,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", this.$swal.stopTimer);
+                    toast.addEventListener("mouseleave", this.$swal.resumeTimer);
+                  }
+                })
+
+                Toast.fire({
+                  icon: "success",
+                  title: "อัพเดทข้อมูลเรียบร้อย",
+                })
+          }).cath(error=> {
+             console.log(error.repoinse.data)
+            console.log(error.repoinse.status)
+            console.log(error.repoinse.headers)
+          })
+    },
+
+
+    // เมื่อมีการเลือกรูปภาพในฟอร์มแก้ไขสินค้า
+    editonFileChange(e) {
+      const file = e.target.files[0];
+      this.file = e.target.files[0];
+      this.imgUrl = URL.createObjectURL(file);
+    },
+
     // สร้าง function จัดรูปแบบ ด้วย moment
     format_date(value) {
       if(value){
