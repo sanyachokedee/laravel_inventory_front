@@ -22,7 +22,7 @@
             ></path>
           </svg>
         </div>
-        <form>
+        <form @submit.prevent="onSubmit">
           <input
             v-model="keyword"
             class="w-full py-2 pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-200 border-0 rounded-md"
@@ -30,7 +30,7 @@
             placeholder="ป้อนชื่อสินค้าที่ต้องการค้นหา"
             aria-label="Search"
           />
-          <button type="submit" class="hidden">Submit</button>
+          <button @click="submitSearchForm" type="submit" class="hidden">Submit</button>
         </form>
       </div>
       <div>
@@ -56,7 +56,7 @@
       </div>
       <div>
         <button
-          @click="submitSearchForm"
+          @click="resetSearchForm"
           class="flex items-center justify-between px-4 py-1.5 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-yellow-500 border border-transparent rounded-lg active:bg-purple-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-purple"
         >
           <svg
@@ -148,7 +148,7 @@
                 <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
                   <img
                     class="object-cover w-full h-full rounded-full"
-                    src=""
+                    :src="product.users.avatar"
                     alt=""
                     loading="lazy"
                   />
@@ -157,10 +157,10 @@
                     aria-hidden="true"
                   ></div>
                 </div>
-                <div>
-                  <p class="font-semibold">{{}}</p>
-                  <p class="text-xs text-gray-600 dark:text-gray-400">
-                    Updated {{ format_date(product.updated_at)}}
+                <div>                  
+                  <p class="font-semibold">{{ product.users.fullname }}</p>
+                  <p class="text-xs text-gray-600 dark:text-gray-400"> 
+                   Updated {{ format_date(product.updated_at)}}
                   </p>
                 </div>
               </div>
@@ -185,7 +185,7 @@
                 </svg>
               </button>
               <button
-                @click="onclickDelete(product.id)"
+                @click="onClickDelete(product.id)"
                 class="px-4 py-2 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-purple"
               >
                 <svg
@@ -342,6 +342,113 @@
       </div>
     </div>
   </div>
+
+  <!-- Popup สำหรับแก้ไขสินค้า รับ (id) product -->
+  <div v-if="showEditModal"    
+    id="editProductModal"
+    class="fixed top-0 left-0 flex items-center justify-center w-full h-full modal"
+  >
+    <div
+      class="absolute w-full h-full bg-gray-900 opacity-70 modal-overlay"
+    ></div>
+    <div
+      class="z-50 w-11/12 p-5 mx-auto overflow-y-auto bg-white rounded shadow-lg h-4/5 modal-container md:max-w-md"
+    >
+      <!-- Header -->
+      <div class="flex items-center justify-center w-full h-auto">
+        <div
+          class="flex items-start justify-start w-full h-auto py-2 text-xl font-bold"
+        >
+          แก้ไขสินค้า
+        </div>
+        <div
+          @click="editCloseModal()"
+          class="flex justify-center w-1/12 h-auto cursor-pointer"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#000000"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-x"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </div>
+        <!--Header End-->
+      </div>
+      <!-- Modal Content-->
+      <div class="w-full h-auto mb-4">
+        <form ref="addProductForm" @submit.prevent="onSubmit" enctype="multipart/form-data">
+          <label class="block my-3 text-gray-700 text-md" for="name">ชื่อสินค้า</label>
+          <input
+            v-model="ename"
+            class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow"
+            type="text"
+            placeholder="Product name"/>
+           <div v-if="v$.name.$error" class="mt-2 text-sm text-red-500">
+              {{ v$.name.$errors[0].$message }}
+           </div>
+
+          <label class="block my-3 text-gray-700 text-md" for="slug"
+            >สลัก</label
+          >
+          <input
+            v-model="eslug"
+            class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow"
+            type="text"
+            placeholder="product-slug"
+          />
+
+          <div v-if="v$.slug.$error" class="mt-2 text-sm text-red-500">
+                {{ v$.slug.$errors[0].$message }}
+           </div>
+
+          <label class="block my-3 text-gray-700 text-md" for="description"
+            >รายละเอียด</label
+          >
+          <textarea
+            v-model="edescription"
+            class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow"
+            rows="5"
+            placeholder="Product description"
+          ></textarea>
+
+          <label class="block my-3 text-gray-700 text-md" for="price"
+            >ราคา</label
+          >
+          <input
+            v-model="eprice"
+            class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow"
+            type="text"
+            placeholder="0.00"
+          />
+          <div v-if="v$.price.$error" class="mt-2 text-sm text-red-500">
+                {{ v$.price.$errors[0].$message }}
+           </div>
+
+          <div class="mt-4">
+            <img ref="fileupload" v-if="eimgUrl" :src="eimgUrl" class="w-ful" />
+          </div>
+
+          <label class="block my-3 text-gray-700 text-md" for="image">ภาพสินค้า</label>
+          <input @change="onFileChange" class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow"
+            type="file"/>
+
+          <button @click="submitFormEdit(eid)" class="w-full px-4 py-2 mt-4 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg text-md active:bg-purple-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-purple">
+                อัพเดทข้อมูล
+          </button>
+           
+
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -364,7 +471,7 @@ export default {
       perPage: 0,
       total: 0,
 
-      // ตัวแปรสำหรับเปิด/ปิด popup
+      // ตัวแปรสำหรับเปิด/ปิด popup addProduct
       showAddModal: false,
 
       // ตัวแปรสำหรับผูกกับฟอร์มเพิ่มสินค้า
@@ -376,6 +483,18 @@ export default {
       fileName: "",
       imgUrl: "",
       file: null,
+
+      //ตัวแปรสำหรับ เปิด/ปิด popup editProduct
+      showEditModal: false,
+      eid: "",
+      ename: "",
+      edescription: "",
+      eslug: "",
+      eprice: "",
+      eimgUrl: "",
+
+      // ตัวแปรสำหรับค้นหา
+      keyword: ""
     };
   },
   components: {
@@ -396,10 +515,35 @@ export default {
       this.total = responseProduct.total;
     },
 
+    // ฟังก์ชันสำหรับดึงรายการสินค้าจากค้นหาข้อมูล search
+    async getProductsSearch(pageNumber) {
+      let response = await http.get(`products/search/${this.keyword}?page=${pageNumber}`);
+      let responseProduct = response.data;
+      this.products = responseProduct;
+      this.currentPage = responseProduct.current_page;
+      this.perPage = responseProduct.per_page;
+      this.total = responseProduct.total;
+    },
+
     // สร้าง method สำหรับดึงสินค้าจาก Paginate
     onPageClick(event) {
+
       this.currentPage = event;
-      this.getProducts(this.currentPage);
+      // เช็คว่ามีการค้นหาสินค้าหรือเปล่า 
+      if(this.keyword ==""){
+          this.getProducts(this.currentPage)
+      }else{
+        this.getProductsSearch(this.currentPage)
+        this.getCurrentPage()
+      }
+    },
+
+    // ล้างข้อมูลในค้นหา
+    resetSearchForm() {
+      // ไปแสดงหน้าหลักดึงข้อมูลมาใหม่อีกครั้ง
+        this.keyword =""   // ล้างค่า
+        this.currentPage=1   // กำหนดให้เป็นหน้าหนึ่งก่อน ถ้าไม่กำหนดไว้จะค้างหน้านั้น เช่น อยู่หน้า3 ก็อยู๋หน้า 3
+        this.getProducts(this.currentPage);
     },
 
     // ส่วนเพิ่มสินค้าใหม่
@@ -414,11 +558,12 @@ export default {
       this.onResetForm() //ทำการรีเซตฟอร์ม method
     },
 
-    // เมื่อมีการเลือกรูปภาพในฟอร์มเพิ่มสินค้า
+    // เมื่อมีการเลือกรูปภาพในฟอร์มเพิ่มสินค้า + แก้ไขภาพโหลดใหม่
     onFileChange(e) {
       const file = e.target.files[0];
       this.file = e.target.files[0];
       this.imgUrl = URL.createObjectURL(file);
+      this.eimgUrl = URL.createObjectURL(file)
     },
 
     //ล้างข้อมูลในฟอร์มเพิ่มสินค้า
@@ -509,7 +654,9 @@ export default {
       this.onResetForm() //ทำการรีเซตฟอร์ม method
     },
 
+    //*************************************************//
     // สร้างฟังก์ชั่นสำหรับอัพเดทข้อมูล
+    //*************************************************//
     submitFormEdit(id){
       // console.log("submitFomEdit"+id) // ได้ค่าจากการกดปุ่ม แก้ไข 
       // ใช้ FormData ของ HTML5 API (Object) ลองรับทั้งแบบแนบไฟล์ และไม่แนบไฟล์
@@ -525,13 +672,8 @@ export default {
           http.post(`products/${id}`,
             data
           ).then(response => {
-            console.log(response.data)
-            //ล้างข้อมูลในฟอร์มเพิ่มสินค้า
-            // this.onResetForm()
-            this.editCloseModal()
 
-            // ไปแสดงหน้าหลักดึงข้อมูลมาใหม่อีกครั้ง
-            this.getProducts(this.currentPage);
+            console.log(response.data)     
 
             // เรียกใช้งาน popup ของ sweetalert2
                 const Toast = this.$swal.mixin({
@@ -549,9 +691,27 @@ export default {
                 Toast.fire({
                   icon: "success",
                   title: "อัพเดทข้อมูลเรียบร้อย",
+                }).then(()=>{
+                  //ล้างข้อมูลในฟอร์มเพิ่มสินค้า
+                  // this.onResetForm()
+                  this.editCloseModal()
+                  // หรือแค่เปลี่ยนตัวแปร this.showEditModal = false
+
+                  // ไปแสดงหน้าหลักดึงข้อมูลมาใหม่อีกครั้ง
+                  // this.getProducts(this.currentPage);
+
+                  // เช็คว่ามีการค้นหาสินค้าหรือเปล่า 
+                  if(this.keyword ==""){
+                      this.getProducts(this.currentPage)
+                  }else{
+                    this.getProductsSearch(this.currentPage)
+                    this.getCurrentPage()
+                  }
+                  
+
                 })
           }).cath(error=> {
-             console.log(error.repoinse.data)
+            console.log(error.respoinse.data)
             console.log(error.repoinse.status)
             console.log(error.repoinse.headers)
           })
@@ -565,19 +725,72 @@ export default {
       this.imgUrl = URL.createObjectURL(file);
     },
 
-    // สร้าง function จัดรูปแบบ ด้วย moment
-    format_date(value) {
-      if(value){
-        return moment(String(value)).format('DD/MM/YY HH:mm')
-      }
+    //*************************************************//
+    // ส่วนการลบสินค้า
+    //*************************************************//
+    onClickDelete(id) {
+      console.log('onclickDelete(product.id) '+id)
+        this.$swal.fire({
+        title: 'ยืนยันการลบรายการนี้ ?',
+        icon: 'warning',
+        showDenyButton: false,
+        showCancelButton: true,
+        confirmButtonText: 'ยืนยัน',
+        confirmButtonColor: '#3085d6',
+        cancelButtonText: 'ปิดหน้าต่าง',
+        cancelButtonColor: '#d33'
+        }).then((result) => {
+          if (result.isConfirmed) {
+              // ส่งไป API delete ลบ id ที่ระบุ
+              http.delete(`products/${id}`).then(()=>{
+              this.$swal.fire('ลบรายการเรียบร้อย !','', 'success')
+            
+              // เช็คว่ามีการค้นหาสินค้าหรือเปล่า 
+                  if(this.keyword ==""){
+                      this.getProducts(this.currentPage)
+                  }else{
+                    this.getProductsSearch(this.currentPage)
+                    this.getCurrentPage()
+                  }
+            }).catch(error =>{
+              console.log(error.respoinse.data)
+              console.log(error.repoinse.status)
+              console.log(error.repoinse.headers)
+            })
+          }
+        })
     },
 
-    // จัดรูปแบบแสดงราคา
-    format_price(value) {
-      let val = (value/1).toFixed(2).replace(',',',')
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    }
+    // ส่วนของการค้นหาสินค้า 
+    submitSearchForm() {
+      // ตรวจก่อนว่ามีข้อมูลหรือไม่
+        if(this.keyword != "") {
+          // เรียก Api ของ laravel
+          http.get(`products/search/${this.keyword}`).then((response)=>{
+              let responseProduct = response.data;
+              this.products = responseProduct;
+              this.currentPage = responseProduct.current_page;
+              this.perPage = responseProduct.per_page;
+              this.total = responseProduct.total;
+          })
+        }else{
+          //
+          this.$swal.fire('ป้อนชื่อสินค้าที่ต้องการค้นหาก่อน');
+        }
+    },
 
+      // สร้าง function จัดรูปแบบ ด้วย moment
+      format_date(value) {
+        if(value){
+          return moment(String(value)).format('DD/MM/YY HH:mm')
+        }
+      },
+  
+      // จัดรูปแบบแสดงราคา
+      format_price(value) {
+        let val = (value/1).toFixed(2).replace(',', ',')
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      },
   },
 
     // ตรวจสอบ validations ข้อมูลของฟอร์มเพิ่มสินค้า
