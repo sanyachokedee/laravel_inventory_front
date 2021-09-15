@@ -283,10 +283,11 @@
           <div v-if="v$.slug.$error" class="mt-2 text-sm text-red-500">
                 {{ v$.slug.$errors[0].$message }}
            </div>
-
+          
           <label class="block my-3 text-gray-700 text-md" for="description"
             >รายละเอียด</label
           >
+
           <textarea
             v-model="description"
             class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow"
@@ -458,6 +459,7 @@ import VueTailwindPagination from '@ocrv/vue-tailwind-pagination'
 import useValidate from '@vuelidate/core'
 import { required, helpers } from '@vuelidate/validators'
 import moment from 'moment';
+
 
 export default {
   data() {

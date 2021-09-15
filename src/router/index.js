@@ -170,7 +170,7 @@ const routes = [
       {
         path: '',
         name: 'Dashboard',
-        component: Dashboard
+        component: Dashboard,
       }
     ],
     meta: {
