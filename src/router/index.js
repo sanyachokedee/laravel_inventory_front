@@ -23,6 +23,29 @@ import Products from '@/views/backend/Products'
 import Testvue from '@/views/backend/Testvue'
 import Start from '@/views/backend/Start';
 
+// ทดสอบสร้างตัวแปรให้เช็คว่า login หรือยัง 
+// let state = false
+
+// สร้างฟังก์ชั่นสำหรับเช็ค route ก่อนเรียกใช้งาน (Rounte Auth Gurards)
+function authGuard(to, from, next) {
+  let isAuthenticated = false
+  if(localStorage.getItem('user')) {
+    // ถ้ามีข้อมูล user ใน localhost ให้เป็น true
+    isAuthenticated = true
+  }else {
+    //
+    isAuthenticated = false
+  }
+
+  // ถ้า Authenticated เป็นจริงให้ทำ
+  if (isAuthenticated) {
+    // อนุญาติให้เข้าสู้ route และ โหลด compoment ที่ต้องการใช้
+    next()
+  }else {
+    next({name: 'Login'})
+  }
+}
+
 const routes = [
   // Frontend's Router
   {
@@ -171,6 +194,14 @@ const routes = [
         path: '',
         name: 'Dashboard',
         component: Dashboard,
+        beforeEnter: authGuard
+        // beforeEnter: (to, from, next) => {
+        //   if (state) {
+        //     next() // ใช้โหลด component ที่เรากำลังเรียกใช้
+        //   } else {
+        //     next({name: 'Login'}) // ถ้า false ให้ไป login
+        //   }
+        // }
       }
     ],
     meta: {
@@ -188,7 +219,8 @@ const routes = [
       {
         path: 'products',
         name: 'Products',
-        component: Products
+        component: Products,
+        beforeEnter: authGuard
       }
     ],
     meta: {
